@@ -39,9 +39,13 @@ Binder实现了IBinder接口。BindProxy也实现了IBinder。
 
 从Android应用层角度：Binder是客户端和服务端进行通信的媒介，当bindService的时候，服务端会返回一个包含了服务端业务调用的Binder对象，通过Binder对象，客户端就可以获取服务端提供的服务或者数据，这里的服务包括普通服务和基于AIDL的服务。
 
+![avatar](./binder.png)
+
 ##3.Stub，Proxy
 Proxy模式，也称代理模式，是经典设计模式中的一种结构型模式，其定义是为其他对象提供一种代理以控制对这个对象的访问，简单的说就是在访问和被访问对象中间加上的一个间接层，以隔离访问者和被访问者的实现细节。e.g.ActivityManager 作为客户端要访问 AMS，AMS 不希望直接暴露在客户端面前，或者不想被客户端的某些操作影响到自己内部结构，就暴露出一个代理对象ActivityManagerProxy，让ActivityManagerProxy参与客户端与服务端的交互。
 RemoteService具体实现了Stub，Proxy是Stub在本地Activity的代理。Proxy与Stub依靠transact和onTransact通信，Proxy与Stub的封装设计最终很方便地完成了Activity与RemoteService跨进程通信。
+![avatar](./proxy-stub.png)
+
 ##4.AIDL
 跨进程通讯AIDL就是帮我们实现了Proxy和Stub模式。封装好了编码和译码功能。底层还是transact和onTransact方法的调用。
 AIDL的基本使用，流程可以概括为：
@@ -56,6 +60,8 @@ AIDL的基本使用，流程可以概括为：
 （5）通过IStudentService类型对象调用Service中的实现方法；
 
 （6）在需要结束与服务端连接的时候，调用unbindService方法进行解绑；
+
+![avatar](./binder-flow.png)
 
 ##5.oneway
 oneway 主要有两个特性：异步调用和串行化处理。
