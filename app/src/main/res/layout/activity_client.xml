@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.baronzhang.ipc.client.ClientActivity">
+    tools:context="com.novice.ipc.client.ClientActivity">
 
     <Button
         android:id="@+id/btn"
@@ -16,4 +16,36 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/use_aidl_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="non-default types adil"
+        android:paddingTop="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn" />
+
+    <Button
+        android:id="@+id/ipc_music_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ipc music"
+        android:paddingTop="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/use_aidl_btn" />
+
+
+    <Button
+        android:id="@+id/aidl_music_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aidl music"
+        android:paddingTop="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ipc_music_btn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

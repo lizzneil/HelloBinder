@@ -1,0 +1,9 @@
+<resources>
+    <string name="start_service_aidl">aidl --start-- service</string>
+    <string name="stop_service_aidl">aidl --stop-- service</string>
+    <string name="bind_service_aidl">aidl --bind-- service</string>
+
+    <string name="play_music_aidl1">play music</string>
+    <string name="pause_music_aidl1">pause music</string>
+
+</resources>
