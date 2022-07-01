@@ -1,7 +1,7 @@
-#进程间通讯基本概念IPC，Binder，proxy，stub，AIDL，oneway
+# 进程间通讯基本概念IPC，Binder，proxy，stub，AIDL，oneway
 
 
-##1.IPC
+## 1.IPC
 IPC：Inter-Process Communication，指进程间通信或者跨进程通信，即两个进程之间进行数据交换的过程。
 某一应用程序（App）时，android系统里的Zygote服务孵化（Fork）一个新的进程（progress）给它，然后将它（App）加载到这个新诞生的进程里。一个进程是一个独立的执行空间，不会被正在其他进程里的程序锁侵犯。
 Android中，有特色的进程间通信方式就是Binder。
@@ -28,7 +28,7 @@ public abstract class ProgramType implements Parcelable {
 
 ```
 
-##2.Binder
+## 2.Binder
 Binder实现了IBinder接口。BindProxy也实现了IBinder。
 从多种角度看Binder：
 从IPC角度：Binder是Android中的一种跨进程通信方式；
@@ -41,12 +41,12 @@ Binder实现了IBinder接口。BindProxy也实现了IBinder。
 
 ![avatar](./binder.png)
 
-##3.Stub，Proxy
+## 3.Stub，Proxy
 Proxy模式，也称代理模式，是经典设计模式中的一种结构型模式，其定义是为其他对象提供一种代理以控制对这个对象的访问，简单的说就是在访问和被访问对象中间加上的一个间接层，以隔离访问者和被访问者的实现细节。e.g.ActivityManager 作为客户端要访问 AMS，AMS 不希望直接暴露在客户端面前，或者不想被客户端的某些操作影响到自己内部结构，就暴露出一个代理对象ActivityManagerProxy，让ActivityManagerProxy参与客户端与服务端的交互。
 RemoteService具体实现了Stub，Proxy是Stub在本地Activity的代理。Proxy与Stub依靠transact和onTransact通信，Proxy与Stub的封装设计最终很方便地完成了Activity与RemoteService跨进程通信。
 ![avatar](./proxy-stub.png)
 
-##4.AIDL
+## 4.AIDL
 跨进程通讯AIDL就是帮我们实现了Proxy和Stub模式。封装好了编码和译码功能。底层还是transact和onTransact方法的调用。
 AIDL的基本使用，流程可以概括为：
 （1）创建服务端的AIDL文件，进行服务端方法的接口定义(IStudentService)；
@@ -63,7 +63,7 @@ AIDL的基本使用，流程可以概括为：
 
 ![avatar](./binder-flow.png)
 
-##5.oneway
+## 5.oneway
 oneway 主要有两个特性：异步调用和串行化处理。
 oneway 关键字用于修改远程调用的行为： 使用oneway时，远程调用不会阻塞；异步调用是指应用向 binder 驱动发送数据后不需要挂起线程等待 binder 驱动的回复，而是直接结束。
 串行化处理是指对于一个服务端的 AIDL 接口而言，所有的 oneway 方法不会同时执行，binder 驱动会将他们串行化处理，排队一个一个调用。
