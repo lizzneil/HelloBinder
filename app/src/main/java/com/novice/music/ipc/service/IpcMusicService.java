@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 
+import com.novice.util.ProcessUtil;
 import com.novice.util.ThreadPoolManager;
 
 import java.text.SimpleDateFormat;
@@ -40,15 +41,16 @@ public class IpcMusicService extends Service{
             switch (code) {
                 case 0:
                     String inMsg = data.readString();
-                    Timber.i("play :: "+ inMsg);
+
+                    Timber.i(ProcessUtil.getProcessName() + " play :: "+ inMsg);
                     play();
-                    reply.writeString("reply Service play Music at " + sdf.format(new Date()));
+                    reply.writeString("Service-reply-play-at-" + sdf.format(new Date()));
                     break;
                 case 1:
                     String inPauseMsg = data.readString();
-                    Timber.i("pause :: "+inPauseMsg);
+                    Timber.i(ProcessUtil.getProcessName() + " pause :: "+inPauseMsg);
                     pause();
-                    reply.writeString("reply Service pause Music at " + sdf.format(new Date()));
+                    reply.writeString("Service-reply-pause-at-" + sdf.format(new Date()));
 
                     break;
                 default:
@@ -60,7 +62,7 @@ public class IpcMusicService extends Service{
     }
 
     public void play(){
-        Timber.i("play");
+        Timber.i(ProcessUtil.getProcessName() + " play");
 //        synchronized (this){
 //            if(null==playRunnable){
 //                playRunnable = new Runnable() {
@@ -87,7 +89,7 @@ public class IpcMusicService extends Service{
 
     }
     public void pause(){
-        Timber.i("pause");
+        Timber.i(ProcessUtil.getProcessName() + " pause");
 //        synchronized (this){
 //            if(null!=playRunnable){
 //                ThreadPoolManager.newInstance().shutdown();

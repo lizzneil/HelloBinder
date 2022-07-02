@@ -29,4 +29,13 @@
         android:onClick="pause"
         android:text="pause" />
 
+
+    <TextView
+        android:id="@+id/ipc_music_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="status" />
+
+
 </LinearLayout>

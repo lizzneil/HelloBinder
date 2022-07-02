@@ -10,6 +10,8 @@ import com.novice.ipc.INoviceRemoteService;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class AidlRemoteService extends Service {
 
     private List<AidlBookData> books = new ArrayList<>();
@@ -53,7 +55,7 @@ public class AidlRemoteService extends Service {
                 book.setPrice(book.getPrice() * 3);
                 books.add(book);
 
-//                Timber.i("Timber aidl books: " + book.toString());
+                Timber.i("Timber aidl books: " + book.toString());
             }
         }
     };

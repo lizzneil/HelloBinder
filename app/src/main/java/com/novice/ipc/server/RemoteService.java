@@ -84,7 +84,7 @@ public class RemoteService extends Service {
                 book.setPrice(book.getPrice() * 2);
                 books.add(book);
 
-                Log.e("Server", "books: " + book.toString());
+               Timber.i( "books: " + book.toString());
             }
         }
     };

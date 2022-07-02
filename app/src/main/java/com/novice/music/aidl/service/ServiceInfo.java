@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import com.novice.ipc.IRemoteMusicService;
 import com.novice.ipc.IRemoteMusicServiceCallback;
+import com.novice.ipc.R;
 
 public class ServiceInfo {
     final Activity mActivity;
+    //对应service
     final Class<?> mClz;
+    //绑定状态
     final TextView mStatus;
+    //进度
     final TextView musicStatus;
     boolean mServiceBound;
     IRemoteMusicService mServiceProxy;
@@ -26,7 +30,13 @@ public class ServiceInfo {
     IRemoteMusicServiceCallback musicProcessCallback= new IRemoteMusicServiceCallback.Stub() {
         @Override
         public void playProcess(int value) throws RemoteException {
-            musicStatus.setText( String.format( "play [%d]",value));
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    musicStatus.setText(String.format( "play [%d] service callback",value));
+                }
+            });
+
         }
     };
 

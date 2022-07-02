@@ -44,6 +44,7 @@ Binder实现了IBinder接口。BindProxy也实现了IBinder。
 ## 3.Stub，Proxy
 Proxy模式，也称代理模式，是经典设计模式中的一种结构型模式，其定义是为其他对象提供一种代理以控制对这个对象的访问，简单的说就是在访问和被访问对象中间加上的一个间接层，以隔离访问者和被访问者的实现细节。e.g.ActivityManager 作为客户端要访问 AMS，AMS 不希望直接暴露在客户端面前，或者不想被客户端的某些操作影响到自己内部结构，就暴露出一个代理对象ActivityManagerProxy，让ActivityManagerProxy参与客户端与服务端的交互。
 RemoteService具体实现了Stub，Proxy是Stub在本地Activity的代理。Proxy与Stub依靠transact和onTransact通信，Proxy与Stub的封装设计最终很方便地完成了Activity与RemoteService跨进程通信。
+
 ![avatar](./proxy-stub.png)
 
 ## 4.AIDL

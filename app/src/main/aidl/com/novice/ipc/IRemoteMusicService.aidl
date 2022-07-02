@@ -6,20 +6,19 @@ import com.novice.ipc.IRemoteMusicServiceCallback;
 
 interface IRemoteMusicService {
 
+    /**
+    * Often you want to allow a service to call back to its clients.
+    * This shows how to do so, by registering a callback interface with
+    * the service.
+    */
+    void registerCallback(IRemoteMusicServiceCallback cb);
 
-                /**
-                 * Often you want to allow a service to call back to its clients.
-                 * This shows how to do so, by registering a callback interface with
-                 * the service.
-                 */
-                void registerCallback(IRemoteMusicServiceCallback cb);
+    /**
+    * Remove a previously registered callback interface.
+    */
+    void unregisterCallback(IRemoteMusicServiceCallback cb);
 
-                /**
-                 * Remove a previously registered callback interface.
-                 */
-                void unregisterCallback(IRemoteMusicServiceCallback cb);
+    void pause();
 
-                void pause();
-
-                void play();
+    void play();
 }

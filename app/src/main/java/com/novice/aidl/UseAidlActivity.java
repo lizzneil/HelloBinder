@@ -16,6 +16,8 @@ import com.novice.aidl.server.AidlRemoteService;
 import com.novice.ipc.INoviceRemoteService;
 import com.novice.ipc.R;
 
+import timber.log.Timber;
+
 public class UseAidlActivity extends AppCompatActivity {
 
     /***
@@ -75,9 +77,9 @@ public class UseAidlActivity extends AppCompatActivity {
                 try {
                     AidlBookData book = new AidlBookData(price, "aidl书籍" + price);
                     mIAidlRemoteServiceProxy.addBook(book);
-//                    for(AidlBookData aAidlBookData : mIAidlRemoteService.getBooks()){
-//                        Timber.i(aAidlBookData.toString());
-//                    }
+                    for(AidlBookData aAidlBookData : mIAidlRemoteServiceProxy.getBooks()){
+                        Timber.i(aAidlBookData.toString());
+                    }
                     price++;
                 } catch (RemoteException e) {
                     e.printStackTrace();
