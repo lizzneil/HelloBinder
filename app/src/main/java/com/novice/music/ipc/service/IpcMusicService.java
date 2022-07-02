@@ -41,14 +41,13 @@ public class IpcMusicService extends Service{
             switch (code) {
                 case 0:
                     String inMsg = data.readString();
-
-                    Timber.i(ProcessUtil.getProcessName() + " play :: "+ inMsg);
+                    Timber.i(ProcessUtil.getProcessNameInfo(IpcMusicService.this.getApplicationContext()) + " play :: "+ inMsg);
                     play();
                     reply.writeString("Service-reply-play-at-" + sdf.format(new Date()));
                     break;
                 case 1:
                     String inPauseMsg = data.readString();
-                    Timber.i(ProcessUtil.getProcessName() + " pause :: "+inPauseMsg);
+                    Timber.i(ProcessUtil.getProcessNameInfo(IpcMusicService.this.getApplicationContext())  + " pause :: "+inPauseMsg);
                     pause();
                     reply.writeString("Service-reply-pause-at-" + sdf.format(new Date()));
 
