@@ -13,7 +13,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.novice.aidl.server.AidlRemoteService;
-import com.novice.ipc.INoviceRemoteService;
+import com.novice.ipc.IAidlRemoteService;
 import com.novice.ipc.R;
 
 import timber.log.Timber;
@@ -40,14 +40,14 @@ public class UseAidlActivity extends AppCompatActivity {
      *
      * RemoteService具体实现了Stub
      */
-    INoviceRemoteService mIAidlRemoteServiceProxy;
+    IAidlRemoteService mIAidlRemoteServiceProxy;
 
     private ServiceConnection mAidlConnection = new ServiceConnection() {
         // Called when the connection with the service is established
         public void onServiceConnected(ComponentName className, IBinder service) {
             // Following the example above for an AIDL interface,
             // this gets an instance of the IRemoteInterface, which we can use to call on the service
-            mIAidlRemoteServiceProxy = INoviceRemoteService.Stub.asInterface(service);
+            mIAidlRemoteServiceProxy = IAidlRemoteService.Stub.asInterface(service);
         }
 
         // Called when the connection with the service disconnects unexpectedly

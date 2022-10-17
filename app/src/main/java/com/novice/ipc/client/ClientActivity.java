@@ -20,6 +20,7 @@ import com.novice.ipc.server.RemoteService;
 import com.novice.ipc.server.Stub;
 import com.novice.music.aidl.MusicAidlActivity;
 import com.novice.music.ipc.MusicIpcActivity;
+import com.novice.noAidlService.NoAidlActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -102,6 +103,18 @@ public class ClientActivity extends AppCompatActivity {
                 ClientActivity.this.startActivity(intent);
             }
         });
+
+        Button no_aidl_btn = findViewById(R.id.no_aidl_btn);
+        no_aidl_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClientActivity.this, NoAidlActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ClientActivity.this.startActivity(intent);
+            }
+        });
+
+
         Button btn = findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

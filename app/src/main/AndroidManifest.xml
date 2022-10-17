@@ -2,11 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.novice.ipc">
 
-    <!-- Play local audio file required permission.-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- Play web url audio file required permission.-->
+    <!-- Play local audio file required permission. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Play web url audio file required permission. -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".IpcApplication"
         android:allowBackup="true"
@@ -16,10 +15,41 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
+            android:name="com.novice.noAidlService.NoAidlService"
+            android:process=":remote"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <activity
+            android:name="com.novice.noAidlService.NoAidlActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.novice.onewaycrash.OneWayCrashActivity"
+            android:exported="false" />
+
+        <service
+            android:name="com.novice.onewaycrash.RemoteOneWayService2"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote2">
+            <intent-filter>
+                <action android:name="action.test.remote.call2" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.novice.onewaycrash.RemoteOneWayService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="action.test.remote.call" />
+            </intent-filter>
+        </service>
+        <service
             android:name="com.novice.music.aidl.service.AidlMusicService"
             android:enabled="true"
             android:exported="true"
-            android:process=":remote"></service>
+            android:process=":remote" />
         <service
             android:name="com.novice.music.ipc.service.IpcMusicService"
             android:enabled="true"

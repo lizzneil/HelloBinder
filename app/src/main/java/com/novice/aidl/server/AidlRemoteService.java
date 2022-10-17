@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import com.novice.aidl.AidlBookData;
-import com.novice.ipc.INoviceRemoteService;
+import com.novice.ipc.IAidlRemoteService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,11 @@ public class AidlRemoteService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-//        throw new UnsupportedOperationException("Not yet implemented");
+//        throw new UnsupportedOperationExcept ion("Not yet implemented");
         return binderStub;
     }
 
-    INoviceRemoteService.Stub binderStub = new INoviceRemoteService.Stub() {
+    IAidlRemoteService.Stub binderStub = new IAidlRemoteService.Stub() {
         @Override
         public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
 

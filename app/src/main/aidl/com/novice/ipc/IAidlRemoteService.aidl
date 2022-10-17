@@ -1,11 +1,11 @@
-// INoviceRemoteService.aidl
+// IAidlRemoteService.aidl
 package com.novice.ipc;
 
 // Declare any non-default types here with import statements
 import com.novice.ipc.AidlBookData;
 
 
-interface INoviceRemoteService {
+interface IAidlRemoteService {
     /**
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.

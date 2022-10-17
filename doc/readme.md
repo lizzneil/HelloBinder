@@ -47,6 +47,12 @@ RemoteService具体实现了Stub，Proxy是Stub在本地Activity的代理。Prox
 
 ![avatar](./proxy-stub.png)
 
+具体的实现 Ui与service之间的关系
+![avatar](./stubAndProxy2.png)
+
+从应用层到binder驱动。
+![avatar](./stubAndProxy.png)
+
 ## 4.AIDL
 跨进程通讯AIDL就是帮我们实现了Proxy和Stub模式。封装好了编码和译码功能。底层还是transact和onTransact方法的调用。
 AIDL的基本使用，流程可以概括为：

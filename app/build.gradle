@@ -20,7 +20,8 @@ android {
         main.res.srcDirs += [
                 'src/main/java/com/novice/aidl/res',
                 'src/main/java/com/novice/music/aidl/res',
-                'src/main/java/com/novice/music/ipc/res'
+                'src/main/java/com/novice/music/ipc/res',
+                'src/main/java/com/novice/noAidlService/res'
         ]
     }
 }
