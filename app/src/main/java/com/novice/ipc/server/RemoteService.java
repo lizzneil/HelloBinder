@@ -4,9 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
-import com.novice.ipc.Book;
+import com.novice.ipc.NoAidlBookData;
 import com.novice.ipc.util.DebugUtil;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import timber.log.Timber;
 
 public class RemoteService extends Service {
 
-    private List<Book> books = new ArrayList<>();
+    private List<NoAidlBookData> noAidlBookData = new ArrayList<>();
 
     public RemoteService() {
     }
@@ -25,10 +24,10 @@ public class RemoteService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Book book = new Book();
-        book.setName("三体");
-        book.setPrice(88);
-        books.add(book);
+        NoAidlBookData noAidlBookData = new NoAidlBookData();
+        noAidlBookData.setName("三体");
+        noAidlBookData.setPrice(88);
+        this.noAidlBookData.add(noAidlBookData);
     }
 
     @Override
@@ -62,29 +61,29 @@ public class RemoteService extends Service {
 
     private final Stub bookManagerStub = new Stub() {
         @Override
-        public List<Book> getBooks() throws RemoteException {
+        public List<NoAidlBookData> getBooks() throws RemoteException {
             synchronized (this) {
-                if (books != null) {
-                    return books;
+                if (noAidlBookData != null) {
+                    return noAidlBookData;
                 }
                 return new ArrayList<>();
             }
         }
 
         @Override
-        public void addBook(Book book) throws RemoteException {
+        public void addBook(NoAidlBookData noAidlBookData) throws RemoteException {
             synchronized (this) {
-                if (books == null) {
-                    books = new ArrayList<>();
+                if (RemoteService.this.noAidlBookData == null) {
+                    RemoteService.this.noAidlBookData = new ArrayList<>();
                 }
 
-                if (book == null)
+                if (noAidlBookData == null)
                     return;
 
-                book.setPrice(book.getPrice() * 2);
-                books.add(book);
+                noAidlBookData.setPrice(noAidlBookData.getPrice() * 2);
+                RemoteService.this.noAidlBookData.add(noAidlBookData);
 
-               Timber.i( "books: " + book.toString());
+               Timber.i( "books: " + noAidlBookData.toString());
             }
         }
     };

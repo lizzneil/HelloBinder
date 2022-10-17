@@ -13,11 +13,11 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.novice.aidl.UseAidlActivity;
-import com.novice.ipc.Book;
+import com.novice.ipc.NoAidlBookData;
 import com.novice.ipc.R;
-import com.novice.ipc.server.BookManager;
+import com.novice.ipc.proxy.Proxy;
+import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.RemoteService;
-import com.novice.ipc.server.Stub;
 import com.novice.music.aidl.MusicAidlActivity;
 import com.novice.music.ipc.MusicIpcActivity;
 import com.novice.noAidlService.NoAidlActivity;
@@ -31,15 +31,18 @@ import timber.log.Timber;
 
 public class ClientActivity extends AppCompatActivity {
 
-    private BookManager bookManagerServiceProxy;
+    private IBookManagerService IBookManagerServiceServiceProxy;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Timber.i("onServiceConnected ： ComponentName：[" + name.getPackageName() + "\t" + name.getClassName() + "]");
-            bookManagerServiceProxy = Stub.asInterface(service);
-            if (bookManagerServiceProxy != null) {
+//            用AIDL时，实现如下：
+//            bookManagerServiceProxy = Stub.asInterface(service);
+//            实际上： 可以直接写成下面的这个，省点步聚。在发起对service调用方，Stub里还要queryLocalInterface最终是new.
+            IBookManagerServiceServiceProxy = new Proxy(service);
+            if (IBookManagerServiceServiceProxy != null) {
                 try {
-                    List<Book> books = bookManagerServiceProxy.getBooks();
+                    List<NoAidlBookData> noAidlBookData = IBookManagerServiceServiceProxy.getBooks();
 
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -49,7 +52,7 @@ public class ClientActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            bookManagerServiceProxy = null;
+            IBookManagerServiceServiceProxy = null;
             Timber.i("onServiceDisconnected  ::  ComponentName：[" + name.getPackageName() + "\t" + name.getClassName() + "]");
         }
 
@@ -57,7 +60,7 @@ public class ClientActivity extends AppCompatActivity {
 
     /***
      *  常见有示例用标志位 确定是否binding上了service。这会带来同步问题，状态不统一问题。
-     *  因有意外条件会导致service中止，导致binding失效。因此直接看 service stub最好。在这里就是{@link #bookManagerServiceProxy}
+     *  因有意外条件会导致service中止，导致binding失效。因此直接看 service stub最好。在这里就是{@link #IBookManagerServiceServiceProxy}
      *  因 意外条件会走 到意外的处理。会走 {@link ServiceConnection#onServiceDisconnected(ComponentName)}
      *  主动断掉会走 {@link #unbindService(ServiceConnection)}
      *
@@ -119,22 +122,22 @@ public class ClientActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (bookManagerServiceProxy == null) {
+                if (IBookManagerServiceServiceProxy == null) {
                     //if (!isConnection) {
                     attemptToBindService();
                     return;
                 }
 
-                if (bookManagerServiceProxy == null)
+                if (IBookManagerServiceServiceProxy == null)
                     return;
 
                 try {
-                    Book book = new Book();
-                    book.setPrice(101);
-                    book.setName("编码");
-                    bookManagerServiceProxy.addBook(book);
+                    NoAidlBookData noAidlBookData = new NoAidlBookData();
+                    noAidlBookData.setPrice(101);
+                    noAidlBookData.setName("编码");
+                    IBookManagerServiceServiceProxy.addBook(noAidlBookData);
 
-                    Timber.i(ClientActivity.this.getProcessName()+" "+bookManagerServiceProxy.getBooks().toString());
+                    Timber.i(ClientActivity.this.getProcessName()+" "+ IBookManagerServiceServiceProxy.getBooks().toString());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -165,7 +168,7 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (null == bookManagerServiceProxy) {
+        if (null == IBookManagerServiceServiceProxy) {
             //   if (!isConnection) {
             attemptToBindService();
         }
@@ -175,7 +178,7 @@ public class ClientActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Timber.i("onStop");
-        if (null != bookManagerServiceProxy) {
+        if (null != IBookManagerServiceServiceProxy) {
             //  if (isConnection) {
             /***
              * 解释有 isConnection 成员变量的情况
@@ -186,7 +189,7 @@ public class ClientActivity extends AppCompatActivity {
              */
 //            isConnection = false;
             unbindService(serviceConnection);
-            bookManagerServiceProxy = null;
+            IBookManagerServiceServiceProxy = null;
         }
     }
 }

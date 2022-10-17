@@ -4,20 +4,18 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-import com.novice.ipc.Book;
-import com.novice.ipc.server.BookManager;
+import com.novice.ipc.NoAidlBookData;
+import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.Stub;
 
 import java.util.List;
 
 /**
- * @author baronzhang (baron[dot]zhanglei[at]gmail[dot]com)
- *         05/01/2018
+ * 模拟AIDL里的stub.proxy 在调用service 方使用
  */
-public class Proxy implements BookManager {
+public class Proxy implements IBookManagerService {
 
-    private static final String DESCRIPTOR = "com.novice.ipc.server.BookManager";
-
+    private static final String DESCRIPTOR = Stub.DESCRIPTOR;
     private IBinder remote;
 
     public Proxy(IBinder remote) {
@@ -30,16 +28,16 @@ public class Proxy implements BookManager {
     }
 
     @Override
-    public List<Book> getBooks() throws RemoteException {
+    public List<NoAidlBookData> getBooks() throws RemoteException {
         Parcel data = Parcel.obtain();
         Parcel replay = Parcel.obtain();
-        List<Book> result;
+        List<NoAidlBookData> result;
 
         try {
             data.writeInterfaceToken(DESCRIPTOR);
             remote.transact(Stub.TRANSAVTION_getBooks, data, replay, 0);
             replay.readException();
-            result = replay.createTypedArrayList(Book.CREATOR);
+            result = replay.createTypedArrayList(NoAidlBookData.CREATOR);
         } finally {
             replay.recycle();
             data.recycle();
@@ -48,16 +46,16 @@ public class Proxy implements BookManager {
     }
 
     @Override
-    public void addBook(Book book) throws RemoteException {
+    public void addBook(NoAidlBookData noAidlBookData) throws RemoteException {
 
         Parcel data = Parcel.obtain();
         Parcel replay = Parcel.obtain();
 
         try {
             data.writeInterfaceToken(DESCRIPTOR);
-            if (book != null) {
+            if (noAidlBookData != null) {
                 data.writeInt(1);
-                book.writeToParcel(data, 0);
+                noAidlBookData.writeToParcel(data, 0);
             } else {
                 data.writeInt(0);
             }

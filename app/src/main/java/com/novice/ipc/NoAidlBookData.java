@@ -4,10 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * @author baronzhang (baron[dot]zhanglei[at]gmail[dot]com)
- *         2017/10/17
+ * 不用AIDL进使用的parcel
  */
-public class Book implements Parcelable {
+public class NoAidlBookData implements Parcelable {
 
     private int price;
     private String name;
@@ -39,23 +38,23 @@ public class Book implements Parcelable {
         dest.writeString(this.name);
     }
 
-    public Book() {
+    public NoAidlBookData() {
     }
 
-    protected Book(Parcel in) {
+    protected NoAidlBookData(Parcel in) {
         this.price = in.readInt();
         this.name = in.readString();
     }
 
-    public static final Creator<Book> CREATOR = new Creator<Book>() {
+    public static final Creator<NoAidlBookData> CREATOR = new Creator<NoAidlBookData>() {
         @Override
-        public Book createFromParcel(Parcel source) {
-            return new Book(source);
+        public NoAidlBookData createFromParcel(Parcel source) {
+            return new NoAidlBookData(source);
         }
 
         @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
+        public NoAidlBookData[] newArray(int size) {
+            return new NoAidlBookData[size];
         }
     };
 

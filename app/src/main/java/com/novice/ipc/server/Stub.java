@@ -6,29 +6,30 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-import com.novice.ipc.Book;
+import com.novice.ipc.NoAidlBookData;
 import com.novice.ipc.proxy.Proxy;
 
 import java.util.List;
 
 /**
- * @author baronzhang (baron[dot]zhanglei[at]gmail[dot]com)
- *         05/01/2018
+ * 这个模拟AIDL 自动生成的stub。在被调用的service 里使用。
+ *
+ * stub 是实际提供service的地方。android.os.service是stub的容器。是stub安身立命的地方。
  */
-public abstract class Stub extends Binder implements BookManager {
+public abstract class Stub extends Binder implements IBookManagerService {
 
-    private static final String DESCRIPTOR = "com.novice.ipc.server.BookManager";
+    public static final String DESCRIPTOR = "com.novice.ipc.server.IBookManagerService";
 
     public Stub() {
         this.attachInterface(this, DESCRIPTOR);
     }
 
-    public static BookManager asInterface(IBinder binder) {
+    public static IBookManagerService asInterface(IBinder binder) {
         if (binder == null)
             return null;
         IInterface iin = binder.queryLocalInterface(DESCRIPTOR);
-        if (iin != null && iin instanceof BookManager)
-            return (BookManager) iin;
+        if (iin != null && iin instanceof IBookManagerService)
+            return (IBookManagerService) iin;
         return new Proxy(binder);
     }
 
@@ -37,6 +38,16 @@ public abstract class Stub extends Binder implements BookManager {
         return this;
     }
 
+    /**
+     * 这里会把数据（执行完的的结果 写的binder的 mmap里，供调用方取结果。）
+     * 最后一句 super.onTransact 完成写入mmap.
+     * @param code
+     * @param data
+     * @param reply
+     * @param flags
+     * @return
+     * @throws RemoteException
+     */
     @Override
     protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
         switch (code) {
@@ -47,16 +58,16 @@ public abstract class Stub extends Binder implements BookManager {
 
             case TRANSAVTION_getBooks:
                 data.enforceInterface(DESCRIPTOR);
-                List<Book> result = this.getBooks();
+                List<NoAidlBookData> result = this.getBooks();
                 reply.writeNoException();
                 reply.writeTypedList(result);
                 return true;
 
             case TRANSAVTION_addBook:
                 data.enforceInterface(DESCRIPTOR);
-                Book arg0 = null;
+                NoAidlBookData arg0 = null;
                 if (data.readInt() != 0) {
-                    arg0 = Book.CREATOR.createFromParcel(data);
+                    arg0 = NoAidlBookData.CREATOR.createFromParcel(data);
                 }
                 this.addBook(arg0);
                 reply.writeNoException();
