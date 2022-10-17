@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * 模拟AIDL里的stub.proxy 在调用service 方使用
+ *
+ * 实际调用binder的transact 把调用参数写入mmap
  */
 public class Proxy implements IBookManagerService {
 

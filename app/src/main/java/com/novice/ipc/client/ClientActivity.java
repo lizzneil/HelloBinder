@@ -137,7 +137,7 @@ public class ClientActivity extends AppCompatActivity {
                     noAidlBookData.setName("编码");
                     IBookManagerServiceServiceProxy.addBook(noAidlBookData);
 
-                    Timber.i(ClientActivity.this.getProcessName()+" "+ IBookManagerServiceServiceProxy.getBooks().toString());
+                    Timber.i(ClientActivity.this.getProcessName()+" getBooks: "+ IBookManagerServiceServiceProxy.getBooks().toString());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

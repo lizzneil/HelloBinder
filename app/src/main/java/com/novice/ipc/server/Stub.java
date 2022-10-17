@@ -15,6 +15,9 @@ import java.util.List;
  * 这个模拟AIDL 自动生成的stub。在被调用的service 里使用。
  *
  * stub 是实际提供service的地方。android.os.service是stub的容器。是stub安身立命的地方。
+ *
+ * stub为抽像类 原因是 它是在AIDL里自动生成的。其只知道接口 和传输数据的类型，而不能知道具体实现。
+ * 具体实现得使用方定义。所以AIDL实现中，把STUB放到service 里实例化，定义传输数据以外的业务逻辑。
  */
 public abstract class Stub extends Binder implements IBookManagerService {
 
