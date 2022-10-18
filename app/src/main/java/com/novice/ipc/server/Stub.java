@@ -16,17 +16,27 @@ import java.util.List;
  *
  * stub 是实际提供service的地方。android.os.service是stub的容器。是stub安身立命的地方。
  *
- * stub为抽像类 原因是 它是在AIDL里自动生成的。其只知道接口 和传输数据的类型，而不能知道具体实现。
- * 具体实现得使用方定义。所以AIDL实现中，把STUB放到service 里实例化，定义传输数据以外的业务逻辑。
+ * stub在AIDL里为抽像类 原因是 它是在AIDL里自动生成的。其只知道接口 和传输数据的类型，而不能知道具体实现。
+ * 具体实现得使用方定义。所以AIDL实现中，把 stub 放到service 里去被继承，被定义，被实例化，定义传输数据以外的业务逻辑。
  */
 public abstract class Stub extends Binder implements IBookManagerService {
 
     public static final String DESCRIPTOR = "com.novice.ipc.server.IBookManagerService";
 
     public Stub() {
+
         this.attachInterface(this, DESCRIPTOR);
     }
 
+    /**
+     * asInterface的作用是根据调用是否属于同进程而返回不同的实例对象
+     * 在service 里返回的是binder本身，也是stub, 调用的是onTransact,把响应数据写进MMAP.
+     * 调用方返回的是proxy 调用的是transact 把请求数据写进MMAP。
+     *
+     * 实际上stub proxy 所有方法是可以写在一个类里的。分开的好处是： 逻辑清晰，码农好懂。调用方不必看onTransact.使用方不必看transact
+     * @param binder
+     * @return
+     */
     public static IBookManagerService asInterface(IBinder binder) {
         if (binder == null)
             return null;

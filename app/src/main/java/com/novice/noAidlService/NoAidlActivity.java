@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -29,6 +30,13 @@ public class NoAidlActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
 
+                //调用与service 不同进程时，这里的 service 为android.os.BinderProxy的实例
+                //调用与service 同进程时  ，这里的 service 为 com.novice.noAidlService.NoAidlBinder实例
+                //AIDL实现里 （这里没有用AIDL，全部自己写的）调用方与service同进程时，  这里的 service 为com.novice.noAidlService.NoAidlService 的成员变量   类型为的stub.内部类。
+                Log.e(ConstValue.TAG,"onServiceConnected " + service);
+                long token = Binder.clearCallingIdentity();
+
+                String processInfo = String.format("\t||myPid[%d]  Binder getCallingPid[%d] callToke[%d]",android.os.Process.myPid(),Binder.getCallingPid(),token);
                 //仅供演示，后面无须调用，所以不保存 IBinder 实例  IBinder mBinder = null; AIDL中的IBinder 为stub
                 //没有通过 AIDL.Stub.asInterface 转成对应的AIDL 接口。而是 binder  直接 transact实现stub.proxy的功能。
                 //这时的 service 对应 NoAidlBinder 的实例，而不是NoAidlService的实例
@@ -41,10 +49,10 @@ public class NoAidlActivity extends AppCompatActivity {
 
                 Log.e(ConstValue.TAG, "在client端\tclient方 transact start---- NoAidlActivity 调用 NoAidlService, pid = "
                         + android.os.Process.myPid() + ", thread = "
-                        + Thread.currentThread().getName());
+                        + Thread.currentThread().getName()+processInfo);
 
                 String str = "****client invoke server :msg";
-                Log.e(ConstValue.TAG, "在client端\tclient方 调用 server 传了个String ： " + str);
+                Log.e(ConstValue.TAG, "在client端\tclient方 调用 server 传了个String ： " + str+processInfo);
                 //2.请求的data  ,向请求包写数据，作为参数。
                 data.writeString(str);
 
@@ -59,10 +67,10 @@ public class NoAidlActivity extends AppCompatActivity {
 
                 Log.e(ConstValue.TAG, "在client端\tNoAidlActivity , pid = "
                         + android.os.Process.myPid() + ", thread = "
-                        + Thread.currentThread().getName());
+                        + Thread.currentThread().getName()+processInfo);
 
                 //4. 從reply讀取服務端的返回值
-                Log.e(ConstValue.TAG, "在client端\tclient方 transact end---- 收到 server 的返回值 ：" + reply.readString());
+                Log.e(ConstValue.TAG, "在client端\tclient方 transact end---- 收到 server 的返回值 ：" + reply.readString()+processInfo);
             }
 
             @Override

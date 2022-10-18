@@ -11,7 +11,7 @@ public class NoAidlService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         //返回server 端的IBinder 。在写AIDL 时，这个IBinder 同时会实现 AIDL的接口。
-        return new NoAidlBinder();
+        return new NoAidlStubBinder();
 //        // TODO: Return the communication channel to the service.
 //        throw new UnsupportedOperationException("Not yet implemented");
     }

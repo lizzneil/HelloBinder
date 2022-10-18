@@ -3,10 +3,12 @@ package com.novice.ipc.proxy;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.novice.ipc.NoAidlBookData;
 import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.Stub;
+import com.novice.noAidlService.ConstValue;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ public class Proxy implements IBookManagerService {
 
     public Proxy(IBinder remote) {
 
+//       调用方与service不同进程时 这里的 remote 为android.os.BinderProxy的实例
+//       调用方与service同进程时 这里的 remote 为com.novice.ipc.server.RemoteService$1 成员变量   类型为的stub.内部类。
+
+        Log.e(ConstValue.TAG,"new proxy : IBinder type:  " + remote);
         this.remote = remote;
     }
 

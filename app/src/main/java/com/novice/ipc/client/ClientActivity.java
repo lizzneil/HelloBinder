@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +21,7 @@ import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.RemoteService;
 import com.novice.music.aidl.MusicAidlActivity;
 import com.novice.music.ipc.MusicIpcActivity;
+import com.novice.noAidlService.ConstValue;
 import com.novice.noAidlService.NoAidlActivity;
 
 import java.io.BufferedReader;
@@ -35,10 +37,16 @@ public class ClientActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+
+// 调用方与 RemoteService 不同进程时 这里的 service 为android.os.BinderProxy的实例
+// 调用方与 RemoteService 同进程时 这里的 service 为com.novice.ipc.server.RemoteService$1 成员变量   类型为的stub.内部类。
+            Log.e(ConstValue.TAG, "onServiceConnected : service type:  " + service);
             Timber.i("onServiceConnected ： ComponentName：[" + name.getPackageName() + "\t" + name.getClassName() + "]");
-//            用AIDL时，实现如下：
-//            bookManagerServiceProxy = Stub.asInterface(service);
-//            实际上： 可以直接写成下面的这个，省点步聚。在发起对service调用方，Stub里还要queryLocalInterface最终是new.
+//用AIDL时，实现如下：
+//bookManagerServiceProxy = Stub.asInterface(service);
+//同进程替代写法：  （com.novice.ipc.server.IBookManagerService）service.queryLocalInterface(DESCRIPTOR); //其中DESCRIPTOR = "com.novice.ipc.server.IBookManagerService"
+
+//实际上：不同进程时 可以直接写成下面的这个，省点步聚。在发起对service调用方，Stub里还要queryLocalInterface最终是new.
             IBookManagerServiceServiceProxy = new Proxy(service);
             if (IBookManagerServiceServiceProxy != null) {
                 try {
@@ -57,6 +65,19 @@ public class ClientActivity extends AppCompatActivity {
         }
 
     };
+
+    public static String getProcessName() {
+        try {
+            File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");
+            BufferedReader mBufferedReader = new BufferedReader(new FileReader(file));
+            String processName = mBufferedReader.readLine().trim();
+            mBufferedReader.close();
+            return processName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /***
      *  常见有示例用标志位 确定是否binding上了service。这会带来同步问题，状态不统一问题。
@@ -137,7 +158,7 @@ public class ClientActivity extends AppCompatActivity {
                     noAidlBookData.setName("编码");
                     IBookManagerServiceServiceProxy.addBook(noAidlBookData);
 
-                    Timber.i(ClientActivity.this.getProcessName()+" getBooks: "+ IBookManagerServiceServiceProxy.getBooks().toString());
+                    Timber.i(ClientActivity.this.getProcessName() + " getBooks: " + IBookManagerServiceServiceProxy.getBooks().toString());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -146,18 +167,6 @@ public class ClientActivity extends AppCompatActivity {
         });
     }
 
-    public static String getProcessName() {
-        try {
-            File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");
-            BufferedReader mBufferedReader = new BufferedReader(new FileReader(file));
-            String processName = mBufferedReader.readLine().trim();
-            mBufferedReader.close();
-            return processName;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     private void attemptToBindService() {
         Timber.i("attemptToBindService");
         Intent intent = new Intent(this, RemoteService.class);
