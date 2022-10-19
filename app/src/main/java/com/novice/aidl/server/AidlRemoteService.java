@@ -43,19 +43,21 @@ public class AidlRemoteService extends Service {
         }
 
         @Override
-        public void addBook(AidlBookData book) throws RemoteException {
+        public int addBook(AidlBookData book) throws RemoteException {
             synchronized (this) {
                 if (books == null) {
                     books = new ArrayList<>();
                 }
 
                 if (book == null)
-                    return;
+                    return books.size();
 
                 book.setPrice(book.getPrice() * 3);
                 books.add(book);
 
+
                 Timber.i("Timber aidl books: " + book.toString());
+                return books.size();
             }
         }
     };

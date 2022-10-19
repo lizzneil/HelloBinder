@@ -15,5 +15,9 @@ interface IAidlRemoteService {
 
     List<AidlBookData> getBooks()  ;
 
-    void addBook(inout AidlBookData book)  ;
+/**
+* 不带oneway的方法，会生成局部变量_reply，但当方法返回值为void时，不会生成局部变量_result，这个才是真正的返回值。
+* 以上说的是 proxy的逻辑。stub不会有_result，return的是true 或false
+*/
+    int addBook(in AidlBookData book)  ;
 }

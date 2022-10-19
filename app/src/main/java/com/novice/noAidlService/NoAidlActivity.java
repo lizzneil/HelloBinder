@@ -32,7 +32,7 @@ public class NoAidlActivity extends AppCompatActivity {
 
                 //调用与service 不同进程时，这里的 service 为android.os.BinderProxy的实例
                 //调用与service 同进程时  ，这里的 service 为 com.novice.noAidlService.NoAidlBinder实例
-                //AIDL实现里 （这里没有用AIDL，全部自己写的）调用方与service同进程时，  这里的 service 为com.novice.noAidlService.NoAidlService 的成员变量   类型为的stub.内部类。
+                //AIDL实现里 （这里没有用AIDL，全部自己写的）调用方与service同进程时，  这里的 service 为com.novice.noAidlService.NoAidlService$1 的成员变量   类型为的stub.内部类。
                 Log.e(ConstValue.TAG,"onServiceConnected " + service);
                 long token = Binder.clearCallingIdentity();
 

@@ -19,10 +19,12 @@ import com.novice.ipc.R;
 import com.novice.ipc.proxy.Proxy;
 import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.RemoteService;
+import com.novice.ipc.server.Stub;
 import com.novice.music.aidl.MusicAidlActivity;
 import com.novice.music.ipc.MusicIpcActivity;
 import com.novice.noAidlService.ConstValue;
 import com.novice.noAidlService.NoAidlActivity;
+import com.novice.onewaycrash.OneWayCrashActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +45,7 @@ public class ClientActivity extends AppCompatActivity {
             Log.e(ConstValue.TAG, "onServiceConnected : service type:  " + service);
             Timber.i("onServiceConnected ： ComponentName：[" + name.getPackageName() + "\t" + name.getClassName() + "]");
 //用AIDL时，实现如下：
-//bookManagerServiceProxy = Stub.asInterface(service);
+//            IBookManagerServiceServiceProxy = Stub.asInterface(service);
 //同进程替代写法：  （com.novice.ipc.server.IBookManagerService）service.queryLocalInterface(DESCRIPTOR); //其中DESCRIPTOR = "com.novice.ipc.server.IBookManagerService"
 
 //实际上：不同进程时 可以直接写成下面的这个，省点步聚。在发起对service调用方，Stub里还要queryLocalInterface最终是new.
@@ -138,6 +140,16 @@ public class ClientActivity extends AppCompatActivity {
             }
         });
 
+
+        Button one_way_btn= findViewById(R.id.one_way_btn);
+        one_way_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClientActivity.this, OneWayCrashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ClientActivity.this.startActivity(intent);
+            }
+        });
 
         Button btn = findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {

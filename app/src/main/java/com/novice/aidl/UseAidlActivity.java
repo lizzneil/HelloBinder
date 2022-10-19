@@ -76,9 +76,9 @@ public class UseAidlActivity extends AppCompatActivity {
 
                 try {
                     AidlBookData book = new AidlBookData(price, "aidl书籍" + price);
-                    mIAidlRemoteServiceProxy.addBook(book);
+                    int bookCnt = mIAidlRemoteServiceProxy.addBook(book);
                     for(AidlBookData aAidlBookData : mIAidlRemoteServiceProxy.getBooks()){
-                        Timber.i(aAidlBookData.toString());
+                        Timber.i(aAidlBookData.toString()+" bookcnt:"+bookCnt);
                     }
                     price++;
                 } catch (RemoteException e) {

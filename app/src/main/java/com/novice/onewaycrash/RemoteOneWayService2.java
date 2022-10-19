@@ -31,7 +31,7 @@ public class RemoteOneWayService2 extends Service {
         public void run() {
             try {
                 Log.d(TAG, "RemoteService2 client call remote " + (mCallCount++));
-                mRemoteService.remoteCallbackTest();
+                mRemoteService.callRemoteTest();
                 Log.d(TAG, "RemoteService2 client call remote end " + (--mCallCount));
             } catch (RemoteException e) {
                 e.printStackTrace();
