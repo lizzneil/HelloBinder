@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.novice.ipc">
-
     <!-- Play local audio file required permission. -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Play web url audio file required permission. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <package android:name="com.novice.ipc.ipcclient" />
+    </queries>
     <application
-        android:name=".IpcApplication"
+        android:name="com.novice.ipc.IpcApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="com.novice.messenger.IpcMsgServerActivity"
+            android:exported="false" />
+
+        <service
+            android:name="com.novice.messenger.service.IpcMsgService"
+            android:enabled="true"
+            android:exported="true"  >
+            <intent-filter>
+                <action android:name="aidlexample" />
+                <action android:name="messengerexample" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.novice.messenger.service.IpcBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.novice.ipc.ipcclient" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.novice.noAidlService.NoAidlService"
-            android:process=":remote"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false"
+            android:process=":remote" />
 
         <activity
             android:name="com.novice.noAidlService.NoAidlActivity"

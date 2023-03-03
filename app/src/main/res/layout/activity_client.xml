@@ -69,4 +69,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/no_aidl_btn" />
 
+    <Button
+        android:id="@+id/message_service_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Messenger service btn"
+        android:paddingTop="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/one_way_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

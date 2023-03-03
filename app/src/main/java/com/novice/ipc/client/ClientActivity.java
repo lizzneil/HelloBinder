@@ -20,6 +20,7 @@ import com.novice.ipc.proxy.Proxy;
 import com.novice.ipc.server.IBookManagerService;
 import com.novice.ipc.server.RemoteService;
 import com.novice.ipc.server.Stub;
+import com.novice.messenger.IpcMsgServerActivity;
 import com.novice.music.aidl.MusicAidlActivity;
 import com.novice.music.ipc.MusicIpcActivity;
 import com.novice.noAidlService.ConstValue;
@@ -97,6 +98,18 @@ public class ClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
+
+
+
+        Button message_service_btn = findViewById(R.id.message_service_btn);
+        message_service_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClientActivity.this, IpcMsgServerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ClientActivity.this.startActivity(intent);
+            }
+        });
         //use_aidl_btn
         Button aidl_btn = findViewById(R.id.use_aidl_btn);
         aidl_btn.setOnClickListener(new View.OnClickListener() {
